@@ -17,8 +17,36 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>2.2.4-1</version>
+		</dependency>
 
 
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>2.15.0</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.2.12</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.4.0-b180830.0359</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.7</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -28,6 +56,29 @@
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.6.15</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/ai.djl/api -->
+		<dependency>
+			<groupId>ai.djl</groupId>
+			<artifactId>api</artifactId>
+			<version>0.23.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ai.djl</groupId>
+			<artifactId>model-zoo</artifactId>
+			<version>0.23.0</version>
+
+		</dependency>
+		<dependency>
+			<!--
+                See https://github.com/awslabs/djl/blob/master/mxnet/mxnet-engine/README.md for more MXNet library selection options
+            -->
+			<groupId>ai.djl.mxnet</groupId>
+			<artifactId>mxnet-native-auto</artifactId>
+			<version>1.7.0-backport</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
@@ -106,11 +157,40 @@
 
 	<build>
 		<plugins>
+<!--			<plugin>-->
+<!--				<groupId>org.codehaus.mojo</groupId>-->
+<!--				<artifactId>jaxb2-maven-plugin</artifactId>-->
+<!--				<version>1.6</version>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>xjc</id>-->
+<!--						<goals>-->
+<!--							<goal>xjc</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--				<configuration>-->
+<!--					<schemaDirectory>src/main/java/soap</schemaDirectory>-->
+<!--					<outputDirectory>src/main/java</outputDirectory>-->
+<!--					<clearOutputDir>false</clearOutputDir>-->
+<!--					<schemaFiles>*.xsd</schemaFiles>-->
+<!--				</configuration>-->
+<!--				<dependencies>-->
+<!--					&lt;!&ndash; https://mvnrepository.com/artifact/javax.activation/activation &ndash;&gt;-->
+<!--					<dependency>-->
+<!--						<groupId>javax.activation</groupId>-->
+<!--						<artifactId>activation</artifactId>-->
+<!--						<version>1.1</version>-->
+<!--					</dependency>-->
+
+<!--				</dependencies>-->
+<!--			</plugin>-->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<excludes>
+
 						<exclude>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>

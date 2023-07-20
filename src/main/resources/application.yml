@@ -33,6 +33,6 @@ spring:
 #      time-to-live: 300000
 
 app:
+  namespace: http://schemas.xmlsoap.org/soap/envelope/
   dev-url: http://localhost:8080
   prod-url: http://localhost:8080
-
