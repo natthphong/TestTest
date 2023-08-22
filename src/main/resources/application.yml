@@ -1,18 +1,47 @@
+
 spring:
   batch:
     job:
       enabled: false
     initialize-schema: always
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: password
-    url: jdbc:mysql://localhost:3306/db
-    name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username: sa
+    password: QuillRocks!
+    url: jdbc:sqlserver://localhost:11433;databaseName=master;encrypt=true;trustServerCertificate=true;
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
+    database-platform: org.hibernate.dialect.SQLServerDialect
     hibernate:
-     ddl-auto: update
+      ddl-auto: update
+#  batch:
+#    job:
+#      enabled: false
+#    initialize-schema: always
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    username: root
+#    password: password
+#    url: jdbc:mysql://localhost:3306/db
+#    name: com.mysql.cj.jdbc.Driver
+#  jpa:
+#    database-platform: org.hibernate.dialect.MySQLDialect
+#    hibernate:
+#     ddl-auto: update
+#spring:
+#  batch:
+#    job:
+#      enabled: false
+#    initialize-schema: always
+#  datasource:
+#    driver-class-name: org.postgresql.Driver
+#    username: admin
+#    password: password
+#    url: jdbc:postgresql://localhost:5432/ksas
+#    name: org.postgresql.Driver
+#  jpa:
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    hibernate:
+#      ddl-auto: update
 #  data:
 #    redis:
 #      host: localhost
@@ -32,7 +61,16 @@ spring:
 #    redis:
 #      time-to-live: 300000
 
+xmlRootNamespace: http://schemas.xmlsoap.org/soap/envelope/
 app:
   namespace: http://schemas.xmlsoap.org/soap/envelope/
   dev-url: http://localhost:8080
   prod-url: http://localhost:8080
+tar:
+  migration-location: "db/migrations"
+  database-type: OTHER
+  migration-enable: true
+  migration-show: false
+  start-with-version: 1
+  stop-with-version: 12
+  ignore-version: [1,3,11]
