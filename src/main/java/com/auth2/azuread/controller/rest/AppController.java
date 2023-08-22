@@ -1,6 +1,7 @@
 package com.auth2.azuread.controller.rest;
 
 
+import com.auth2.azuread.AzureadApplication;
 import com.auth2.azuread.controller.rest.cache.CustomerService;
 import com.auth2.azuread.controller.rest.predict.PredictService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,35 +17,41 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.xml.bind.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.extern.slf4j.Slf4j;
 import net.glxn.qrgen.QRCode;
 import net.glxn.qrgen.image.ImageType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 
 @RestController
@@ -82,8 +89,13 @@ public class AppController {
             logger.error(e);
         }
 
+
+
         return "index";
     }
+
+
+
 
     @PostMapping(path = "/login/Oauth/github")
     public void callBack(@RequestBody Map<Object, Object> body) {
@@ -92,6 +104,7 @@ public class AppController {
 
     @GetMapping(path = "/auth")
     public String hello(OAuth2AuthenticationToken authentication) {
+
 
 
         log.info("{}", authentication.getPrincipal().getAttributes());
@@ -203,9 +216,9 @@ public class AppController {
         envelope.setBody(body);
 
 //        Class<XmlRootElement> annotationType = (Class<XmlRootElement>) envelope.getClass().getAnnotation(XmlRootElement.class).getClass();
-        Class<XmlRootElement> annotationType = (Class<XmlRootElement>) envelope.getClass().getAnnotation(XmlRootElement.class).getClass();
-
-        XmlRootElement myAnnotation = AnnotationSetter.setAnnotationValue(annotationType, namespace);
+//        Class<XmlRootElement> annotationType = (Class<XmlRootElement>) envelope.getClass().getAnnotation(XmlRootElement.class).getClass();
+//
+//        XmlRootElement myAnnotation = AnnotationSetter.setAnnotationValue(annotationType, namespace);
 
 
 
@@ -218,35 +231,60 @@ public class AppController {
 //        Envelope envelope1 = AnnotationSetter.setAnnotationValue(annotationType, "custom_value");
 //
 //        // Retrieve and print the annotation value
-        try {
-            Method method = annotationType.getMethod("namespace");
-            String annotationValue = (String) method.invoke(myAnnotation);
-            System.out.println("Annotation Value: " + annotationValue);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Method method = annotationType.getMethod("namespace");
+//            String annotationValue = (String) method.invoke(myAnnotation);
+//            System.out.println("Annotation Value: " + annotationValue);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//        log.info("Envelope {}" ,envelope.getClass().getAnnotation(XmlRootElement.class).namespace());
 
-
-        log.info("Envelope {}" ,envelope.getClass().getAnnotation(XmlRootElement.class).namespace());
-
-
-        XmlRootElement xmlRootElement1 = new XmlRootElement(){
-            @Override
-            public Class<? extends Annotation> annotationType() {
-                return XmlRootElement.class;
-            }
-
-            @Override
-            public String namespace() {
-                return namespace;
-            }
-
-            @Override
-            public String name() {
-                return "Body";
-            }
-        };
-
+//        final XmlRootElement oldAnnotation = Envelope.class.getAnnotation(XmlRootElement.class);
+//                System.out.println("oldAnnotation = " + oldAnnotation.namespace());
+//        Annotation newAnnotation = new XmlRootElement(){
+//            @Override
+//            public Class<? extends Annotation> annotationType() {
+//                return oldAnnotation.annotationType();
+//            }
+//            @Override
+//            public String namespace() {
+//                return namespace;
+//            }
+//            @Override
+//            public String name() {
+//                return "Body";
+//            }
+//        };
+//
+//
+//
+//        System.out.println("oldAnnotation = " + oldAnnotation.namespace());
+//
+//        try {
+////            Field field = Class.class.getDeclaredField("annotations");
+////            field.setAccessible(true);
+////            Method method = Class.class.getDeclaredMethod("setDeclaredAnnotations", null);
+////            method.setAccessible(true);
+//
+//            Field annotationsField = Class.class.getDeclaredField("ANNOTATIONS");
+//            annotationsField.setAccessible(true);
+//
+//            Map<Class<? extends Annotation>, Annotation> annotations = new HashMap<>();
+//            Annotation[] existingAnnotations = Envelope.class.getDeclaredAnnotations();
+//            for (Annotation annotation : existingAnnotations) {
+//                annotations.put(annotation.annotationType(), annotation);
+//            }
+//            annotations.put(XmlRootElement.class, newAnnotation);
+//            annotationsField.set(Envelope.class, annotations);
+//
+//            XmlRootElement modifiedAnnotation =  Envelope.class.getAnnotation(XmlRootElement.class);
+//            System.out.println("modifiedAnnotation = " + modifiedAnnotation.namespace());
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
 
 //        CustomNamespacePrefixMapper namespacePrefixMapper = new CustomNamespacePrefixMapper();
 //        log.info("namespace {}" , namespace);
@@ -257,31 +295,46 @@ public class AppController {
 //            ex.printStackTrace();
 //        }
 //
-//        namespacePrefixMapper.addNamespaceMapping(namespace,"soap");
-//        log.info("namespacePrefixMapper {}" , namespacePrefixMapper);
+
 //        try {
 //            JAXBContext context = JAXBContext.newInstance(envelope.getClass());
 //            Marshaller marshaller = context.createMarshaller();
 //            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-//            marshaller.setProperty("com.sun.xml.bind.marshaller.namespacePrefixMapper", namespacePrefixMapper);
+//            marshaller.setProperty("com.sun.xml.bind.marshaller.namespacePrefixMapper", new CustomNamespacePrefixMapper(namespace,"soap"));
 //        } catch (Exception ex) {
 //            ex.printStackTrace();
 //        }
 
 
+//        try {
+//            JAXBContext context = JAXBContext.newInstance(Envelope.class);
+//            Marshaller marshaller = context.createMarshaller();
+//            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+//
+//            // Get the namespace value from Constant.getNamespace()
+//            String namespace = this.namespace;
+//            // Set the namespace value dynamically for the root element
+//            marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new CustomNamespacePrefixMapper(namespace));
+//            marshaller.marshal(envelope, System.out);
+//        } catch (JAXBException e) {
+//            e.printStackTrace();
+//        }
+
         String xmlContent = marshalToXml(envelope);
 
-        log.info("\n {}" , xmlContent);
+//        log.info("\n {}" , xmlContent);
 
 
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_XML);
 
+//        String xmlContent = getXml(namespace);
 
         HttpEntity<String> httpEntity = new HttpEntity<>(xmlContent, headers);
 
         RestTemplate restTemplate = new RestTemplate();
+
 
         ResponseEntity<String> response = restTemplate.postForEntity("http://www.dneonline.com/calculator.asmx", httpEntity, String.class);
         log.info("response body {}" , response.getBody());
@@ -327,5 +380,26 @@ public class AppController {
         log.info("strings {}" ,strings);
 
 //        valueMethod.invoke(annotation, newValue);
+    }
+
+    public static String getXml(String namespace){
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+                "<ns2:Envelope xmlns=\"http://tempuri.org/\" xmlns:ns2=\""+namespace+"\">\n" +
+                "    <ns2:Body>\n" +
+                "        <Divide>\n" +
+                "            <intA>5</intA>\n" +
+                "            <intB>5</intB>\n" +
+                "        </Divide>\n" +
+                "    </ns2:Body>\n" +
+                "</ns2:Envelope>";
+    }
+    public static <T> T jsonStringToObject(String jsonStringValue, Class<T> clazz) {
+        XmlMapper xmlMapper = new XmlMapper();
+        try {
+            return  xmlMapper.readValue(jsonStringValue, clazz);
+        }catch (Exception ex){
+
+        }
+        return  null;
     }
 }

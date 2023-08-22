@@ -1,13 +1,19 @@
 package com.auth2.azuread.controller.rest;
 
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
-
-@XmlRootElement(name = "Envelope")
+@Component
+@XmlRootElement(name = "Envelope" ,namespace = "http://schemas.xmlsoap.org/soap/envelope/")
+//@XmlAccessorType(XmlAccessType.FIELD)
+//@XmlJavaTypeAdapter(EnvelopeXmlAdapter.class)
+//@XmlRootElement(name = "Envelope")
 //@PropertySource(value = "classpath:application.yml")
 @XmlType(propOrder = {"body"})
 public class Envelope {
@@ -66,5 +72,18 @@ class Divide {
 
     public void setIntB(int intB) {
         this.intB = intB;
+    }
+}
+
+@Component
+class   config{
+
+    @Value("${app.namespace}")
+    public String namespace;
+    public String getSomePropertyValue() {
+        return namespace;
+    }
+    public void setSomePropertyValue(String somePropertyValue) {
+        this.namespace = somePropertyValue;
     }
 }

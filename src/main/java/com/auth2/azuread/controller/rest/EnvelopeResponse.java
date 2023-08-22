@@ -79,7 +79,7 @@ public class EnvelopeResponse {
     }
 }
 
-@JacksonXmlRootElement(localName = "DivideResponse", namespace = "http://tempuri.org/")
+//@JacksonXmlRootElement(localName = "DivideResponse", namespace = "http://tempuri.org/")
 class BodyResponse {
 
     @JacksonXmlProperty(localName = "DivideResponse", namespace = "http://tempuri.org/")
@@ -96,7 +96,7 @@ class BodyResponse {
     }
 }
 
-@JacksonXmlRootElement(localName = "DivideResponse", namespace = "http://tempuri.org/")
+//@JacksonXmlRootElement(localName = "DivideResponse", namespace = "http://tempuri.org/")
 class DivideResponse {
 
     @JacksonXmlProperty(localName = "DivideResult", namespace = "http://tempuri.org/")
