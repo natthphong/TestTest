@@ -1,0 +1,2 @@
+INSERT INTO ast.temp.temp_ms_system (system_code, system_name, system_icon, is_deleted, created_date, created_by, updated_date, updated_by) VALUES (N'AST_temp', N'ast-web-admin', null, N'N', N'2023-08-23 09:13:00.643', N'FlimTest@example.com', null, null);
+INSERT INTO ast.temp.temp_ms_system (system_code, system_name, system_icon, is_deleted, created_date, created_by, updated_date, updated_by) VALUES (N'temp', N'Authorization Management System', null, N'N', N'2023-08-23 16:58:08.560', N'ADMIN', null, null);

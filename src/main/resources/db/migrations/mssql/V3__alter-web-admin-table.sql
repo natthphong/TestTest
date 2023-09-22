@@ -1,0 +1,51 @@
+-- if not exists (SELECT *
+--                FROM sys.tables t
+--                         JOIN sys.schemas s ON (t.schema_id = s.schema_id)
+--                WHERE s.name = 'ams'
+--                  AND t.name = 'ams_ms_branch')
+-- create table ams.ams_ms_branch
+-- (
+--     branch_id    int identity constraint ms_branch_pk primary key,
+--     branch_code  varchar(10) not null,
+--     branch_name  varchar(500) not null,
+--     is_deleted   varchar(1)  not null,
+--     created_date datetime    not null,
+--     created_by   varchar(50),
+--     updated_date datetime,
+--     updated_by   varchar(50)
+-- ) if not exists(select *
+--               from sys.indexes
+--               where name = 'ams_ms_branch_ui01')
+-- create unique index ams_ms_branch_ui01 on ams.ams_ms_branch(branch_code)
+--     where
+--     is_deleted = 'N';
+-- go
+--
+-- if not exists (SELECT *
+--                FROM sys.tables t
+--                         JOIN sys.schemas s ON (t.schema_id = s.schema_id)
+--                WHERE s.name = 'ams'
+--                  AND t.name = 'ams_ms_customer_level')
+-- create table ams.ams_ms_customer_level
+-- (
+--     cust_level_id   int identity constraint ms_customer_pk primary key,
+--     cust_level_code varchar(10) not null,
+--     is_deleted      varchar(1)   not null,
+--     created_date    datetime     not null,
+--     created_by      varchar(50),
+--     updated_date    datetime,
+--     updated_by      varchar(50)
+-- ) if not exists(select *
+--               from sys.indexes
+--               where name = 'ams_ms_customer_level_ui01')
+-- create unique index ams_ms_customer_level_ui01 on ams.ams_ms_customer_level(cust_level_code)
+--     where
+--     is_deleted = 'N';
+-- go
+--
+-- ALTER TABLE ams.ams_ms_user
+--     ADD customer_level_id int not null,
+--     supervisor_code VARCHAR(50),
+--     branch_id int,
+--     email VARCHAR(100) not null,
+--     active_date date

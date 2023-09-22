@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.0</version>
+		<version>3.1.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.auth2</groupId>
@@ -17,12 +17,32 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+
+		<dependency>
+			<groupId>com.tar</groupId>
+			<artifactId>flyway</artifactId>
+			<version>0.0.2</version>
+		</dependency>
+
+<!--		&lt;!&ndash; https://mvnrepository.com/artifact/com.google.code.gson/gson &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>com.google.code.gson</groupId>-->
+<!--			<artifactId>gson</artifactId>-->
+<!--			<version>2.10.1</version>-->
+<!--		</dependency>-->
+
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
 			<artifactId>jaxb-impl</artifactId>
 			<version>2.2.4-1</version>
 		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.2</version>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
@@ -66,26 +86,55 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>8.0.0.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.tar</groupId>
+			<artifactId>tarson</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+		<dependency>
 			<groupId>ai.djl</groupId>
 			<artifactId>model-zoo</artifactId>
 			<version>0.23.0</version>
 
 		</dependency>
-		<dependency>
+<!--		<dependency>-->
 			<!--
                 See https://github.com/awslabs/djl/blob/master/mxnet/mxnet-engine/README.md for more MXNet library selection options
             -->
-			<groupId>ai.djl.mxnet</groupId>
-			<artifactId>mxnet-native-auto</artifactId>
-			<version>1.7.0-backport</version>
-			<scope>runtime</scope>
+<!--			<groupId>ai.djl.mxnet</groupId>-->
+<!--			<artifactId>mxnet-native-auto</artifactId>-->
+<!--			<version>1.7.0-backport</version>-->
+<!--			<scope>runtime</scope>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>com.microsoft.sqlserver</groupId>-->
+<!--			<artifactId>mssql-jdbc</artifactId>-->
+<!--			<scope>runtime</scope>-->
+<!--		</dependency>-->
+		<!-- https://mvnrepository.com/artifact/com.linecorp.centraldogma/centraldogma-common -->
+		<dependency>
+			<groupId>com.linecorp.centraldogma</groupId>
+			<artifactId>centraldogma-common</artifactId>
+			<version>0.62.1</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+
+		<!--		&lt;!&ndash; https://mvnrepository.com/artifact/mysql/mysql-connector-java &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>mysql</groupId>-->
+<!--			<artifactId>mysql-connector-java</artifactId>-->
+<!--			<version>8.0.33</version>-->
+<!--		</dependency>-->
+
+		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.33</version>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 		</dependency>
 
 <!--		<dependency>-->
@@ -153,6 +202,44 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.session</groupId>-->
+<!--			<artifactId>spring-session-core</artifactId>-->
+<!--		</dependency>-->
+
+<!--		&lt;!&ndash; https://mvnrepository.com/artifact/javax.mail/mail &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>javax.mail</groupId>-->
+<!--			<artifactId>mail</artifactId>-->
+<!--			<version>1.5.0-b01</version>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+
+<!--		<dependency>-->
+<!--			<groupId>com.sun.mail</groupId>-->
+<!--			<artifactId>smtp</artifactId>-->
+<!--			<version>1.5.4</version>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>jakarta.mail</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.eclipse.angus</groupId>-->
+<!--			<artifactId>jakarta.mail</artifactId>-->
+<!--			<version>2.0.1</version>-->
+<!--		</dependency>-->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
@@ -198,7 +285,17 @@
 					</excludes>
 				</configuration>
 			</plugin>
-		</plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>19</source>
+                    <target>19</target>
+                </configuration>
+            </plugin>
+        </plugins>
 	</build>
+
+
 
 </project>

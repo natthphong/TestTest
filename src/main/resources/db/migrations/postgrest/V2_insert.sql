@@ -1,4 +1,4 @@
-INSERT INTO db.customer_info
+INSERT INTO customer_info
 (id, age, email, password, username)
 VALUES
   (1, 1, 'taza1a@hotmail.com', '$2a$10$Dl95Uvy7mWa6u653.Bu7NO8WBvg8ssRB7FqgshXAkwzBUrK8BTaSy', 'Test Tar : 1'),
