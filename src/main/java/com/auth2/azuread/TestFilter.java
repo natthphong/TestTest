@@ -53,7 +53,7 @@ public class TestFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         log.info("hello world {}" ,request.getLocalAddr());
         List<Auth.Authorities> authorities = new ArrayList<>();
-        authorities.add(new Auth.Authorities("ROLE_ADMIN"));
+        authorities.add(new Auth.Authorities("ROLE_ADMIN_ALL"));
         authorities.add(new Auth.Authorities("ROLE_BABY"));
         Auth a = new Auth(authorities,null,null,null,true,"ADMIN");
         log.info("hello world {}" ,a);

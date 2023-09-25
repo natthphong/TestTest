@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class RoleController {
     @GetMapping("/admin")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN_GET')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN_GET', 'ROLE_ADMIN_ALL')")
 //    @Secured({"ROLE_ADMIN"})
 //    @RolesAllowed({ "ROLE_ADMIN" })
     public String getHello() {
