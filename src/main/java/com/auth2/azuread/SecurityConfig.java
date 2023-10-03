@@ -10,9 +10,11 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.context.SecurityContextHolderFilter;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -39,10 +41,13 @@ public class SecurityConfig {
                     auth.requestMatchers("/favicon.ico").permitAll();
 //                    auth.requestMatchers(new AntPathRequestMatcher("**/admin/**")).hasRole("ADMINZA");
 //                    auth.requestMatchers("/role/admin/**").hasRole("ADMIN2");
-//                    auth.requestMatchers("/**").permitAll();
+                    auth.requestMatchers("/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
-                .addFilterBefore(new TestFilter(), SecurityContextPersistenceFilter.class)
+//                .securityContext((s)->s.requireExplicitSave(false))
+//                .addFilterBefore(new TestFilter(), SecurityContextHolderFilter.class)
+//                .addFilterBefore(new TestFilter(), SecurityContextPersistenceFilter.class)
+                .addFilterBefore(new TestFilter(), OAuth2LoginAuthenticationFilter.class)
                 .oauth2Login(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults())
                 .build();

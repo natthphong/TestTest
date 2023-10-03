@@ -81,7 +81,7 @@ public class MockLeetCode {
         }
 
 
-        log.info("sum {}" , sum);
+
         return new ArrayList<>();
     }
 

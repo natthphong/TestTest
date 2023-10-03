@@ -18,7 +18,7 @@ public class TestException {
         return this.buildResponseEntity(exception);
     }
     private ResponseEntity<ErrorResponse> buildResponseEntity(BaseException exception) {
-        return new ResponseEntity(new ErrorResponse(exception.getHttpStatus(),exception.getErrorMessage(), exception.getErrorDesc(),LocalDateTime.now()),exception.getHttpStatus());
+        return new ResponseEntity<>(new ErrorResponse(exception.getHttpStatus(),exception.getErrorMessage(), exception.getErrorDesc(),LocalDateTime.now()),exception.getHttpStatus());
     }
 
     record ErrorResponse(HttpStatus code, String message , String desc, LocalDateTime timeStamp){}

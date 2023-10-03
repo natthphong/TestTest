@@ -5,6 +5,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.log.LogMessage;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +19,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -26,7 +28,6 @@ import java.util.List;
 
 @Slf4j
 public class TestFilter implements Filter {
-
 
 //    public TestFilter(AuthenticationManager authenticationManager) {
 //        super(authenticationManager);
@@ -48,22 +49,56 @@ public class TestFilter implements Filter {
 //        log.info("hello world {}" ,a);
 //        chain.doFilter(request, response);
 //    }
+//private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+//    List<Auth.Authorities> authorities = new ArrayList<>();
+//    authorities.add(new Auth.Authorities("ROLE_ADMIN_ALL"));
+//    authorities.add(new Auth.Authorities("ROLE_BABY"));
+//    Auth a = new Auth(authorities,null,null,null,true,"ADMIN");
+//    log.info("hello world {}" ,a);
+//    SecurityContextHolder.getContext().setAuthentication(a);
+//    log.info(" SecurityContextHolder.getContext() {}", SecurityContextHolder.getContext());
+////        List<GrantedAuthority> authorities = new ArrayList<>();
+////        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+////        authorities.add(new SimpleGrantedAuthority("ROLE_BABY"));
+////        Authentication authentication = new UsernamePasswordAuthenticationToken("username", "password", authorities);
+////        SecurityContextHolder.getContext().setAuthentication(authentication);
+////        log.info("hello world {}" ,authorities);
+//    chain.doFilter(request, response);
+//}
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        log.info("hello world {}" ,request.getLocalAddr());
         List<Auth.Authorities> authorities = new ArrayList<>();
         authorities.add(new Auth.Authorities("ROLE_ADMIN_ALL"));
         authorities.add(new Auth.Authorities("ROLE_BABY"));
         Auth a = new Auth(authorities,null,null,null,true,"ADMIN");
         log.info("hello world {}" ,a);
         SecurityContextHolder.getContext().setAuthentication(a);
+        log.info(" SecurityContextHolder.getContext() {}", SecurityContextHolder.getContext());
 //        List<GrantedAuthority> authorities = new ArrayList<>();
 //        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 //        authorities.add(new SimpleGrantedAuthority("ROLE_BABY"));
 //        Authentication authentication = new UsernamePasswordAuthenticationToken("username", "password", authorities);
 //        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        log.info("hello world {}" ,authorities);
+        log.info("hello world {}" ,authorities);
         chain.doFilter(request, response);
     }
+
+//    @Override
+//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+//        List<Auth.Authorities> authorities = new ArrayList<>();
+//        authorities.add(new Auth.Authorities("ROLE_ADMIN_ALL"));
+//        authorities.add(new Auth.Authorities("ROLE_BABY"));
+//        Auth a = new Auth(authorities,null,null,null,true,"ADMIN");
+//        log.info("hello world {}" ,a);
+//        SecurityContextHolder.getContext().setAuthentication(a);
+//        log.info(" SecurityContextHolder.getContext() {}", SecurityContextHolder.getContext());
+////        List<GrantedAuthority> authorities = new ArrayList<>();
+////        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+////        authorities.add(new SimpleGrantedAuthority("ROLE_BABY"));
+////        Authentication authentication = new UsernamePasswordAuthenticationToken("username", "password", authorities);
+////        SecurityContextHolder.getContext().setAuthentication(authentication);
+////        log.info("hello world {}" ,authorities);
+//        chain.doFilter(request, response);
+//    }
 }

@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.batch.core.annotation.AfterStep;
 
 
 import javax.crypto.*;
@@ -24,6 +25,7 @@ import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -31,6 +33,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Slf4j
@@ -318,9 +321,31 @@ public class MockTest {
 
     @Test
     public void testpol() {
-        Object a = 1;
-        int b = (int) a;
-        List<Integer> test = IntStream.rangeClosed(1, 100).boxed().toList();
+//        Object a = 1;
+//        int b = (int) a;
+//        List<Integer> test = IntStream.rangeClosed(1, 100).boxed().toList();
+        int mid = (120 + 9) >> 3;   // 129  = 10000001
+        log.info("mid{}" , mid);   // 64 = 01000000
+        long high = 4_723_372_036_854_775_807L;
+        long low =  4_723_372_036_854_775_807L;
+        System.out.println("mid using >>> 1 = " + ((low + high) >>> 1));
+        System.out.println("mid using / 2   = " + ((low + high) / 2));
+        int bitmask = 0x000F; //        0000  0000 0000  1111 &
+        int val = 0x2222;  //           0010  0010 0010  0010
+                            //          0000  0000 0000  0010
+        System.out.println(val & bitmask);
+        int mid2 = -8 >>> 1;
+        System.out.println(mid2);
+        int mid3 = -8 >> 1;
+        System.out.println(mid3);
+        Random rand = new Random();
+        Random rand2 = new SecureRandom();
+
+        String a = String.join("|", new String[]{"natthapong", "jaroenpronprasit"});
+        log.info("a {}" , a);
+
+        log.info("{}" ,rand.nextInt(100));
+        log.info("{}" ,rand2.nextInt(100));
 
     }
 
@@ -466,6 +491,77 @@ public class MockTest {
         System.out.println("test: " +test.length()+" time: "+now + " seconds");
     }
 
+
+
+    @Test
+    public void testThread(){
+        long start = System.currentTimeMillis();
+        final String[] a = {null};
+        final String[] b = {null};
+        var th1 = new Thread(() -> a[0] =sleep("1"));
+        var th2 = new Thread(() -> b[0] = sleep("2"));
+        th1.start();
+        th2.start();
+        try {
+            th1.join();
+            th2.join();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        log.info("Done :  {}", String.format("%5s ms", System.currentTimeMillis() - start));
+
+        log.info("x {}" , a);
+        log.info("x {}" , b);
+    }
+
+    public String sleep(String a){
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return "WAKE UP " + a;
+    }
+
+    @Test
+    public void pocCom(){
+        long start = System.currentTimeMillis();
+
+        CompletableFuture<String> one = CompletableFuture.supplyAsync(() -> sleep("1"));
+        CompletableFuture<String> two = CompletableFuture.supplyAsync(() -> sleep("2"));
+        Map<String,String> x = null;
+        try {
+            x = CompletableFuture.allOf(one, two).thenApply(unused -> {
+                String oneResult = one.join();
+                String twoResult = two.join();
+                Map<String, String> result = new HashMap<>();
+                result.put("oneResult", oneResult);
+                result.put("twoResult", twoResult);
+                log.info("Done :  {}", String.format("%5s ms", System.currentTimeMillis() - start));
+                return result;
+            }).exceptionally(throwable -> {
+                log.error("Error : {} ", throwable.getMessage());
+                Map<String,String> result = new HashMap<>();
+                result.put("ERROR", throwable.getMessage());
+                return result;
+            }).get();
+        } catch (InterruptedException | ExecutionException e) {
+           e.printStackTrace();
+        }
+
+        assert x != null;
+        log.info("x {}" , x.get("oneResult"));
+        log.info("x {}" , x.get("twoResult"));
+
+
+    }
+    @Test
+    public void pocCom2(){
+        long start = System.currentTimeMillis();
+        sleep("1");
+        sleep("2");
+        log.info("Done :  {}", String.format("%5s ms", System.currentTimeMillis() - start));
+    }
 }
 
 
