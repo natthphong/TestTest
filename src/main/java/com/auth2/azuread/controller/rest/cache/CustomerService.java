@@ -51,6 +51,25 @@ public class CustomerService {
     }
 
 
+    @Cacheable(value = "customer" , key = "#id", unless = "#result == null")
+    public ResponseModel<CustomerEntity> getById(Long id) {
+        ResponseModel<CustomerEntity> responseModel = new ResponseModel<>();
+        responseModel.setCode("0000");
+        responseModel.setDescription("ok");
+        try {
+
+            var customerEntityList = this.customerRepository.findById(id).orElseThrow(RuntimeException::new);
+
+            responseModel.setBody(customerEntityList);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            responseModel.setCode("9999");
+            responseModel.setDescription(ex.getMessage());
+        }
+
+        return responseModel;
+    }
     public List<CustomerModel> listCustomerModelToListCustomerEntity(List<CustomerEntity> customerEntityList) {
         List<CustomerModel> list = new ArrayList<>();
         for (CustomerEntity c : customerEntityList) {

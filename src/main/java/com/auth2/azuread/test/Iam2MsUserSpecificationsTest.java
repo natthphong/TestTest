@@ -76,6 +76,12 @@ public class Iam2MsUserSpecificationsTest {
     @GetMapping
     public void test(@RequestParam(name = "f") String f) {
         log.info("f {}", f);
+        int a = 1;
+        iam2MsUserRepository.findById(1).ifPresentOrElse((e)->{
+
+        },()->{
+
+        });
         var res = iam2MsUserRepository.findAll(firstNameTh(f));
         var test =iam2MsUserRepository.findAll();
         log.info("res {}", res);

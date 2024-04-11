@@ -1,4 +1,6 @@
-
+#logging:
+#  level:
+#    org.springframework: TRACE
 #spring:
 #  batch:
 #    job:
@@ -28,11 +30,21 @@
 #    database-platform: org.hibernate.dialect.MySQLDialect
 #    hibernate:
 #     ddl-auto: update
+server:
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-password: password
+    key-store-type: PKCS12
+  port: 443
 spring:
+  task:
+    scheduling:
+      pool:
+        size: 10
   batch:
     job:
       enabled: false
-    initialize-schema: always
+    initialize-schema: never
   datasource:
     driver-class-name: org.postgresql.Driver
     username: admin

@@ -17,6 +17,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -48,6 +50,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +80,23 @@ public class AppController {
         this.authorizedClientService = authorizedClientService;
     }
 
+
+    @GetMapping("/certificate")
+    public String home(HttpServletRequest request) {
+        // Extract client certificate from the request
+        X509Certificate[] clientCertificates = (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate");
+
+        // Check if client certificate exists
+        if (clientCertificates != null && clientCertificates.length > 0) {
+            // Perform validation or extract information from the client certificate
+            // For example:
+            String clientCN = clientCertificates[0].getSubjectDN().getName();
+            return "Hello, " + clientCN + "! Your certificate is valid.";
+        } else {
+            // No client certificate provided or validation failed
+            return "Client certificate not provided or validation failed.";
+        }
+    }
     @GetMapping
     public String index() {
 
@@ -128,8 +148,14 @@ public class AppController {
             @ApiResponse(responseCode = "404", content = {@Content(schema = @Schema(),mediaType = MediaType.APPLICATION_JSON_VALUE)}),
             @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema(),mediaType = MediaType.APPLICATION_JSON_VALUE)})})
     @GetMapping(path = "/getAllData")
+    @ResponseBody
     public ResponseModel<List<CustomerModel>> getAllDataCustomer() {
         return customerService.getAllDataCustomer();
+    }
+
+    @GetMapping(path = "/get/{id}")
+    public ResponseModel<CustomerEntity> getById(@PathVariable(name = "id")Long id) {
+        return customerService.getById(id);
     }
 
 //    @GetMapping("/generate-qr")

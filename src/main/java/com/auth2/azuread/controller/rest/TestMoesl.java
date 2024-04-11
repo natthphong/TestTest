@@ -18,7 +18,7 @@ public class TestMoesl {
     private String test;
 
     @CustomValidEmpty(exception = TestBaseEx.class,httpStatus = HttpStatus.INTERNAL_SERVER_ERROR , errorMessage ="num not null")
-    private Integer num;
+    private String num;
 
 
 }
